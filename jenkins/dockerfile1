@@ -1,0 +1,4 @@
+FROM jenkins/jenkins
+USER root
+COPY paprec.crt /usr/local/share/ca-certificates/paprec.crt
+RUN update-ca-certificates
