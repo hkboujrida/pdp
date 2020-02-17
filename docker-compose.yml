@@ -1,41 +1,40 @@
-version: '3'
+version: "3"
 
 services:
-
   reverse-proxy:
-     image: reverse-proxy:1.0.0
-     ports:
-        - 80:80
-        - 8080:8080
- 
+    image: reverse-proxy:1.0.2
+    ports:
+      - 80:80
+      - 8080:8080
+
   mysql:
-      image: mysql:5.7
-      volumes:
-        - mysql_data:/var/lib/mysql
-      environment:
-        MYSQL_ROOT_PASSWORD: root
-        MYSQL_DATABASE: keycloak
-        MYSQL_USER: keycloak
-        MYSQL_PASSWORD: password
-      networks: 
-        default:
-        
+    image: mysql:5.7
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+    networks:
+      default:
+
   keycloak:
-      image: jboss/keycloak
-      networks: 
-        default:
-          aliases:
-            - keycloak.example.com
-      environment:
-        DB_VENDOR: MYSQL
-        DB_ADDR: mysql
-        DB_DATABASE: keycloak
-        DB_USER: keycloak
-        DB_PASSWORD: password
-        KEYCLOAK_USER: admin
-        KEYCLOAK_PASSWORD: Pa55w0rd
-      depends_on:
-        - mysql
+    image: jboss/keycloak
+    networks:
+      default:
+        aliases:
+          - keycloak.example.com
+    environment:
+      DB_VENDOR: MYSQL
+      DB_ADDR: mysql
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+    depends_on:
+      - mysql
 
   gitea:
     image: gitea/gitea:latest
@@ -45,7 +44,7 @@ services:
     restart: always
     volumes:
       - gitea:/data
-    networks: 
+    networks:
       default:
         aliases:
           - gitea.example.com
@@ -72,9 +71,9 @@ services:
       - postgresql:/var/lib/postgresql
       # This needs explicit mapping due to https://github.com/docker-library/postgres/blob/4e48e3228a30763913ece952c611e5e9b95c8759/Dockerfile.template#L52
       - postgresql_data:/var/lib/postgresql/data
- 
+
   jenkins:
-    image: haven/jenkins
+    image: jenkins
     volumes:
       - jenkins-home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
@@ -91,5 +90,5 @@ volumes:
   postgresql:
   postgresql_data:
 
-networks: 
+networks:
   default:
